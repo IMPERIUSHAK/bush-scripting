@@ -19,7 +19,6 @@ if [[ $# -ne 4 ]]; then
     exit 1
 fi
 
-
 if [[ "$1" == "-u" ]] && [[ "$3" == "-w"  ]]; then
 	url="$2"
 	wordls="$4"
@@ -32,6 +31,7 @@ else
 	echo -e "\033[1;33m Incorrect usage of script:\n httpffuz -w [wordlist] -u [Url]\033[0m"
 	exit 0
 fi
+
 
 echo -e "Url: $url\nWordlist: $wordls"
 
