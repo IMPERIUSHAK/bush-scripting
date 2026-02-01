@@ -36,11 +36,22 @@ fi
 echo -e "Url: $url\nWordlist: $wordls"
 
 THREADS=10
+TIMEOUT=1
+UA="Mozilla/5.0 (x11; Linux x86_64)"
 
 while IFS= read -r word; do
 (
-	code=$(curl -s -o /dev/null -w "%{http_code} -> $word\n" "$url/$word")
-	echo -e "\033[1;34m[$code] $url/$word\033[0m"
+code=$(curl -k -s \
+    -o /dev/null \
+    --connect-timeout "$TIMEOUT" \
+    -A "$UA" \
+    -w "%{http_code}"\
+    "$url/$word"
+)
+
+	if [[ "$code" != "404" && "$code" != "000" ]]; then
+    		echo -e "\033[1;32m[$code]\033[0m $url/$word"
+	fi
 )&
 
 	while [ "$(jobs -r | wc -l)" -ge "$THREADS" ]; do
